@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ProfesiAI - Klasifikasi Pekerjaan Utama
 
-## Getting Started
+Aplikasi web fullstack modern untuk mengklasifikasi pekerjaan menjadi Kode Profesi standar sesuai referensi. Dibuat menggunakan Next.js App Router dan Anthropic Claude.
 
-First, run the development server:
+## Fitur Utama
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Chat Interface Modern**: Antarmuka mirip ChatGPT dengan desain premium (Glassmorphism, Dark mode).
+- **Streaming Response**: Jawaban dari AI muncul seketika secara real-time.
+- **Context Retrieval**: Menggunakan referensi lokal `context.md` sebagai Knowledge Base untuk Claude.
+- **Caching Cerdas**:
+  - `Context Cache`: Memuat file `context.md` di memory (tidak dibaca setiap request).
+  - `Response Cache`: Menyimpan hasil pencarian sebelumnya (TTL 24 jam) menggunakan LRU Cache untuk menghemat API Call.
+- **Type Safety**: Output Claude divalidasi dan diurai (parsed) menjadi JSON untuk tampilan interaktif.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Teknologi
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js 15, React 19, TailwindCSS v4, shadcn/ui, Framer Motion
+- **Backend**: Next.js Route Handlers, Anthropic SDK
+- **AI Model**: `claude-3-7-sonnet-latest` (pengganti sonnet 3.5/4.6 di sisi Anthropic)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Persyaratan Sistem
 
-## Learn More
+- Node.js >= 20.x
+- Kunci API Anthropic (`ANTHROPIC_API_KEY`)
 
-To learn more about Next.js, take a look at the following resources:
+## Cara Menjalankan
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Install Dependensi**
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Pengaturan Environment**
+   Salin file contoh ke `.env.local`:
+   \`\`\`bash
+   cp .env.local.example .env.local
+   \`\`\`
+   Edit `.env.local` dan masukkan API Key Anthropic Anda.
 
-## Deploy on Vercel
+3. **Jalankan Development Server**
+   \`\`\`bash
+   npm run dev
+   \`\`\`
+   Buka \`http://localhost:3000\` dengan browser Anda.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Arsitektur Berkas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- \`src/app/page.tsx\`: Antarmuka utama aplikasi (Chat UI)
+- \`src/app/api/chat/route.ts\`: Endpoint backend untuk memproses pesan dan streaming Anthropic
+- \`src/lib/anthropic.ts\`: Inisialisasi klien Anthropic
+- \`src/lib/context-loader.ts\`: Pengelola cache untuk \`context.md\`
+- \`src/lib/cache.ts\`: Setup LRU Cache untuk Response dan Prompt
+- \`src/lib/prompts.ts\`: Pembuat System Prompt 
+- \`src/types/index.ts\`: Skema Zod dan TypeScript types
+
+## Keamanan
+
+- **API Key** tidak pernah terekspos ke klien. Panggilan Anthropic murni berjalan di sisi Server (Route Handler).
+- Validasi strict terhadap skema menggunakan TypeScript.
