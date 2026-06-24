@@ -5,6 +5,13 @@ if (!process.env.ANTHROPIC_API_KEY) {
 }
 
 // Ensure server-side use only
-export const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || "",
-});
+let anthropicInstance: Anthropic | null = null;
+
+export const getAnthropicClient = () => {
+  if (!anthropicInstance) {
+    anthropicInstance = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY || "missing-key",
+    });
+  }
+  return anthropicInstance;
+};

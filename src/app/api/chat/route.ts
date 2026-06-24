@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { anthropic } from "@/lib/anthropic";
+import { getAnthropicClient } from "@/lib/anthropic";
 import { getContextContent } from "@/lib/context-loader";
 import { buildSystemPrompt } from "@/lib/prompts";
 import { responseCache, generatePromptHash } from "@/lib/cache";
@@ -48,7 +48,8 @@ export async function POST(req: NextRequest) {
 
     while (retries <= maxRetries) {
       try {
-        const stream = await anthropic.messages.create(
+        const client = getAnthropicClient();
+        const stream = await client.messages.create(
           {
             model: "claude-sonnet-4-6",
             max_tokens: 1024,
