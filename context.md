@@ -234,4 +234,7 @@ Dokumen ini berisi referensi resmi kode profesi atau pekerjaan utama yang harus 
 | Driver Gojek | 110 | Pengemudi Ojek Online |
 | Guru SD | 041 | Guru |
 | Dosen Universitas | 035 | Dosen |
+| Sales | 082 | Pekerja Profesional Penjualan |
+| Sales Marketing | 082 | Pekerja Profesional Penjualan |
+| Marketing | 082 | Pekerja Profesional Penjualan |
 
